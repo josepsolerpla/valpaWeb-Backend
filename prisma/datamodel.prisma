@@ -1,0 +1,18 @@
+enum Role {
+    ROOT
+    ADMIN
+    USER
+  }
+
+type User {
+  id: ID! @unique
+  name: String! @unique
+  password: String!
+  email: String! @unique
+  role: Role! @default(value: USER)
+  createdAt: DateTime!
+  updatedAt: DateTime!
+	slug: String
+	image: String
+}
+
