@@ -247,7 +247,17 @@ module.exports = {
 				user.image = user.image || '';
 				if (withToken) user.token = token || this.generateJWT(user);
 			}
-			return user;
+			return {
+				user: {
+					name: user.name,
+					email: user.email,
+					id: user.id,
+					image: user.image,
+					role: user.role,
+					token: user.token
+				}
+			};
+			// return user;
 		}
 	},
 	events: {
