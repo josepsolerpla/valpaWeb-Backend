@@ -16,3 +16,7 @@ type User {
 	image: String
 }
 
+type Authed {
+  id: ID! @unique
+  idGoogle: String! @unique
+}

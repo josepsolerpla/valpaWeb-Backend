@@ -19,7 +19,15 @@ module.exports = {
 
 				aliases: {
 					// Login
-					'POST /users/login': 'users.login'
+					'POST /users/login': 'users.login',
+
+					// USERS
+					'REST /users': 'users',
+
+					// Check if this email from Google + is valid to enter on the app
+					'POST /authed/isIn': 'authed.isIn',
+					// Add an email valid for app from Google +
+					'POST /authed/add': 'authed.add'
 				},
 				cors: true,
 
@@ -64,9 +72,9 @@ module.exports = {
 			let token;
 			if (req.headers.authorization) {
 				let type = req.headers.authorization.split(' ')[0];
-				if (type === 'Token' || type === 'Bearer') token = req.headers.authorization.split(' ')[1];
+				if (type === 'Token' || type === 'Bearer' || type == 'JWT')
+					token = req.headers.authorization.split(' ')[1];
 			}
-
 			return this.Promise
 				.resolve(token)
 				.then((token) => {

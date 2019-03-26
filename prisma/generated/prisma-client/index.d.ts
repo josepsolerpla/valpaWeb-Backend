@@ -14,6 +14,7 @@ export type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> &
   U[keyof U];
 
 export interface Exists {
+  authed: (where?: AuthedWhereInput) => Promise<boolean>;
   user: (where?: UserWhereInput) => Promise<boolean>;
 }
 
@@ -36,6 +37,29 @@ export interface Prisma {
    * Queries
    */
 
+  authed: (where: AuthedWhereUniqueInput) => AuthedPromise;
+  autheds: (
+    args?: {
+      where?: AuthedWhereInput;
+      orderBy?: AuthedOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => FragmentableArray<Authed>;
+  authedsConnection: (
+    args?: {
+      where?: AuthedWhereInput;
+      orderBy?: AuthedOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => AuthedConnectionPromise;
   user: (where: UserWhereUniqueInput) => UserPromise;
   users: (
     args?: {
@@ -65,6 +89,22 @@ export interface Prisma {
    * Mutations
    */
 
+  createAuthed: (data: AuthedCreateInput) => AuthedPromise;
+  updateAuthed: (
+    args: { data: AuthedUpdateInput; where: AuthedWhereUniqueInput }
+  ) => AuthedPromise;
+  updateManyAutheds: (
+    args: { data: AuthedUpdateManyMutationInput; where?: AuthedWhereInput }
+  ) => BatchPayloadPromise;
+  upsertAuthed: (
+    args: {
+      where: AuthedWhereUniqueInput;
+      create: AuthedCreateInput;
+      update: AuthedUpdateInput;
+    }
+  ) => AuthedPromise;
+  deleteAuthed: (where: AuthedWhereUniqueInput) => AuthedPromise;
+  deleteManyAutheds: (where?: AuthedWhereInput) => BatchPayloadPromise;
   createUser: (data: UserCreateInput) => UserPromise;
   updateUser: (
     args: { data: UserUpdateInput; where: UserWhereUniqueInput }
@@ -90,6 +130,9 @@ export interface Prisma {
 }
 
 export interface Subscription {
+  authed: (
+    where?: AuthedSubscriptionWhereInput
+  ) => AuthedSubscriptionPayloadSubscription;
   user: (
     where?: UserSubscriptionWhereInput
   ) => UserSubscriptionPayloadSubscription;
@@ -102,6 +145,16 @@ export interface ClientConstructor<T> {
 /**
  * Types
  */
+
+export type AuthedOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "idGoogle_ASC"
+  | "idGoogle_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
 
 export type Role = "ROOT" | "ADMIN" | "USER";
 
@@ -126,6 +179,45 @@ export type UserOrderByInput =
   | "image_DESC";
 
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
+
+export type AuthedWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+  idGoogle?: String;
+}>;
+
+export interface AuthedWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  idGoogle?: String;
+  idGoogle_not?: String;
+  idGoogle_in?: String[] | String;
+  idGoogle_not_in?: String[] | String;
+  idGoogle_lt?: String;
+  idGoogle_lte?: String;
+  idGoogle_gt?: String;
+  idGoogle_gte?: String;
+  idGoogle_contains?: String;
+  idGoogle_not_contains?: String;
+  idGoogle_starts_with?: String;
+  idGoogle_not_starts_with?: String;
+  idGoogle_ends_with?: String;
+  idGoogle_not_ends_with?: String;
+  AND?: AuthedWhereInput[] | AuthedWhereInput;
+  OR?: AuthedWhereInput[] | AuthedWhereInput;
+  NOT?: AuthedWhereInput[] | AuthedWhereInput;
+}
 
 export type UserWhereUniqueInput = AtLeastOne<{
   id: ID_Input;
@@ -243,6 +335,18 @@ export interface UserWhereInput {
   NOT?: UserWhereInput[] | UserWhereInput;
 }
 
+export interface AuthedCreateInput {
+  idGoogle: String;
+}
+
+export interface AuthedUpdateInput {
+  idGoogle?: String;
+}
+
+export interface AuthedUpdateManyMutationInput {
+  idGoogle?: String;
+}
+
 export interface UserCreateInput {
   name: String;
   password: String;
@@ -270,6 +374,17 @@ export interface UserUpdateManyMutationInput {
   image?: String;
 }
 
+export interface AuthedSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: AuthedWhereInput;
+  AND?: AuthedSubscriptionWhereInput[] | AuthedSubscriptionWhereInput;
+  OR?: AuthedSubscriptionWhereInput[] | AuthedSubscriptionWhereInput;
+  NOT?: AuthedSubscriptionWhereInput[] | AuthedSubscriptionWhereInput;
+}
+
 export interface UserSubscriptionWhereInput {
   mutation_in?: MutationType[] | MutationType;
   updatedFields_contains?: String;
@@ -283,6 +398,100 @@ export interface UserSubscriptionWhereInput {
 
 export interface NodeNode {
   id: ID_Output;
+}
+
+export interface Authed {
+  id: ID_Output;
+  idGoogle: String;
+}
+
+export interface AuthedPromise extends Promise<Authed>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  idGoogle: () => Promise<String>;
+}
+
+export interface AuthedSubscription
+  extends Promise<AsyncIterator<Authed>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  idGoogle: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AuthedConnection {
+  pageInfo: PageInfo;
+  edges: AuthedEdge[];
+}
+
+export interface AuthedConnectionPromise
+  extends Promise<AuthedConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<AuthedEdge>>() => T;
+  aggregate: <T = AggregateAuthedPromise>() => T;
+}
+
+export interface AuthedConnectionSubscription
+  extends Promise<AsyncIterator<AuthedConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<AuthedEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateAuthedSubscription>() => T;
+}
+
+export interface PageInfo {
+  hasNextPage: Boolean;
+  hasPreviousPage: Boolean;
+  startCursor?: String;
+  endCursor?: String;
+}
+
+export interface PageInfoPromise extends Promise<PageInfo>, Fragmentable {
+  hasNextPage: () => Promise<Boolean>;
+  hasPreviousPage: () => Promise<Boolean>;
+  startCursor: () => Promise<String>;
+  endCursor: () => Promise<String>;
+}
+
+export interface PageInfoSubscription
+  extends Promise<AsyncIterator<PageInfo>>,
+    Fragmentable {
+  hasNextPage: () => Promise<AsyncIterator<Boolean>>;
+  hasPreviousPage: () => Promise<AsyncIterator<Boolean>>;
+  startCursor: () => Promise<AsyncIterator<String>>;
+  endCursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AuthedEdge {
+  node: Authed;
+  cursor: String;
+}
+
+export interface AuthedEdgePromise extends Promise<AuthedEdge>, Fragmentable {
+  node: <T = AuthedPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface AuthedEdgeSubscription
+  extends Promise<AsyncIterator<AuthedEdge>>,
+    Fragmentable {
+  node: <T = AuthedSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateAuthed {
+  count: Int;
+}
+
+export interface AggregateAuthedPromise
+  extends Promise<AggregateAuthed>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateAuthedSubscription
+  extends Promise<AsyncIterator<AggregateAuthed>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
 }
 
 export interface User {
@@ -344,29 +553,6 @@ export interface UserConnectionSubscription
   aggregate: <T = AggregateUserSubscription>() => T;
 }
 
-export interface PageInfo {
-  hasNextPage: Boolean;
-  hasPreviousPage: Boolean;
-  startCursor?: String;
-  endCursor?: String;
-}
-
-export interface PageInfoPromise extends Promise<PageInfo>, Fragmentable {
-  hasNextPage: () => Promise<Boolean>;
-  hasPreviousPage: () => Promise<Boolean>;
-  startCursor: () => Promise<String>;
-  endCursor: () => Promise<String>;
-}
-
-export interface PageInfoSubscription
-  extends Promise<AsyncIterator<PageInfo>>,
-    Fragmentable {
-  hasNextPage: () => Promise<AsyncIterator<Boolean>>;
-  hasPreviousPage: () => Promise<AsyncIterator<Boolean>>;
-  startCursor: () => Promise<AsyncIterator<String>>;
-  endCursor: () => Promise<AsyncIterator<String>>;
-}
-
 export interface UserEdge {
   node: User;
   cursor: String;
@@ -414,6 +600,50 @@ export interface BatchPayloadSubscription
   extends Promise<AsyncIterator<BatchPayload>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Long>>;
+}
+
+export interface AuthedSubscriptionPayload {
+  mutation: MutationType;
+  node: Authed;
+  updatedFields: String[];
+  previousValues: AuthedPreviousValues;
+}
+
+export interface AuthedSubscriptionPayloadPromise
+  extends Promise<AuthedSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = AuthedPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = AuthedPreviousValuesPromise>() => T;
+}
+
+export interface AuthedSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<AuthedSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = AuthedSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = AuthedPreviousValuesSubscription>() => T;
+}
+
+export interface AuthedPreviousValues {
+  id: ID_Output;
+  idGoogle: String;
+}
+
+export interface AuthedPreviousValuesPromise
+  extends Promise<AuthedPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  idGoogle: () => Promise<String>;
+}
+
+export interface AuthedPreviousValuesSubscription
+  extends Promise<AsyncIterator<AuthedPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  idGoogle: () => Promise<AsyncIterator<String>>;
 }
 
 export interface UserSubscriptionPayload {
@@ -493,16 +723,6 @@ The `String` scalar type represents textual data, represented as UTF-8 character
 export type String = string;
 
 /*
-DateTime scalar input type, allowing Date
-*/
-export type DateTimeInput = Date | string;
-
-/*
-DateTime scalar output type, which is always a string
-*/
-export type DateTimeOutput = string;
-
-/*
 The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1. 
 */
 export type Int = number;
@@ -511,6 +731,16 @@ export type Int = number;
 The `Boolean` scalar type represents `true` or `false`.
 */
 export type Boolean = boolean;
+
+/*
+DateTime scalar input type, allowing Date
+*/
+export type DateTimeInput = Date | string;
+
+/*
+DateTime scalar output type, which is always a string
+*/
+export type DateTimeOutput = string;
 
 export type Long = string;
 
@@ -525,6 +755,10 @@ export const models: Model[] = [
   },
   {
     name: "User",
+    embedded: false
+  },
+  {
+    name: "Authed",
     embedded: false
   }
 ];

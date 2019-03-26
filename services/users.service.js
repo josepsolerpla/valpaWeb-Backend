@@ -91,6 +91,7 @@ module.exports = {
 		 * @returns {Object} Created entity & token
 		 */
 		create: {
+			// auth: 'required',
 			params: {
 				user: { type: 'object' }
 			},
@@ -179,35 +180,15 @@ module.exports = {
 				ttl: 60 * 60 // 1 hour
 			},
 			params: {
-				token: 'string'
+				token: { type: 'string', optional: false }
 			},
 			handler(ctx) {
 				return new this.Promise((resolve, reject) => {
 					jwt.verify(ctx.params.token, this.settings.JWT_SECRET, (err, decoded) => {
-						if (err) return reject(err);
-						return resolve(decoded);
+						resolve(decoded);
 					});
 				}).then((decoded) => {
 					if (decoded.id) return this.getById(decoded.id);
-					const query = `
-                  query user($data: UserWhereUniqueInput!) {
-                    user(where: $data) {
-                      id
-                      name
-                      email
-											role
-											slug
-                    }
-                  }
-                `;
-					const data = {
-						data: {
-							name: decoded.name
-						}
-					};
-					return prisma.$graphql(query, data).then((user) => {
-						return user;
-					});
 				});
 			}
 		}

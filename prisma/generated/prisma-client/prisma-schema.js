@@ -3,8 +3,113 @@ module.exports = {
   // Please don't change this file manually but run `prisma generate` to update it.
   // For more information, please read the docs: https://www.prisma.io/docs/prisma-client/
 
-/* GraphQL */ `type AggregateUser {
+/* GraphQL */ `type AggregateAuthed {
   count: Int!
+}
+
+type AggregateUser {
+  count: Int!
+}
+
+type Authed {
+  id: ID!
+  idGoogle: String!
+}
+
+type AuthedConnection {
+  pageInfo: PageInfo!
+  edges: [AuthedEdge]!
+  aggregate: AggregateAuthed!
+}
+
+input AuthedCreateInput {
+  idGoogle: String!
+}
+
+type AuthedEdge {
+  node: Authed!
+  cursor: String!
+}
+
+enum AuthedOrderByInput {
+  id_ASC
+  id_DESC
+  idGoogle_ASC
+  idGoogle_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type AuthedPreviousValues {
+  id: ID!
+  idGoogle: String!
+}
+
+type AuthedSubscriptionPayload {
+  mutation: MutationType!
+  node: Authed
+  updatedFields: [String!]
+  previousValues: AuthedPreviousValues
+}
+
+input AuthedSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: AuthedWhereInput
+  AND: [AuthedSubscriptionWhereInput!]
+  OR: [AuthedSubscriptionWhereInput!]
+  NOT: [AuthedSubscriptionWhereInput!]
+}
+
+input AuthedUpdateInput {
+  idGoogle: String
+}
+
+input AuthedUpdateManyMutationInput {
+  idGoogle: String
+}
+
+input AuthedWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  idGoogle: String
+  idGoogle_not: String
+  idGoogle_in: [String!]
+  idGoogle_not_in: [String!]
+  idGoogle_lt: String
+  idGoogle_lte: String
+  idGoogle_gt: String
+  idGoogle_gte: String
+  idGoogle_contains: String
+  idGoogle_not_contains: String
+  idGoogle_starts_with: String
+  idGoogle_not_starts_with: String
+  idGoogle_ends_with: String
+  idGoogle_not_ends_with: String
+  AND: [AuthedWhereInput!]
+  OR: [AuthedWhereInput!]
+  NOT: [AuthedWhereInput!]
+}
+
+input AuthedWhereUniqueInput {
+  id: ID
+  idGoogle: String
 }
 
 type BatchPayload {
@@ -16,6 +121,12 @@ scalar DateTime
 scalar Long
 
 type Mutation {
+  createAuthed(data: AuthedCreateInput!): Authed!
+  updateAuthed(data: AuthedUpdateInput!, where: AuthedWhereUniqueInput!): Authed
+  updateManyAutheds(data: AuthedUpdateManyMutationInput!, where: AuthedWhereInput): BatchPayload!
+  upsertAuthed(where: AuthedWhereUniqueInput!, create: AuthedCreateInput!, update: AuthedUpdateInput!): Authed!
+  deleteAuthed(where: AuthedWhereUniqueInput!): Authed
+  deleteManyAutheds(where: AuthedWhereInput): BatchPayload!
   createUser(data: UserCreateInput!): User!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
@@ -42,6 +153,9 @@ type PageInfo {
 }
 
 type Query {
+  authed(where: AuthedWhereUniqueInput!): Authed
+  autheds(where: AuthedWhereInput, orderBy: AuthedOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Authed]!
+  authedsConnection(where: AuthedWhereInput, orderBy: AuthedOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AuthedConnection!
   user(where: UserWhereUniqueInput!): User
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
@@ -55,6 +169,7 @@ enum Role {
 }
 
 type Subscription {
+  authed(where: AuthedSubscriptionWhereInput): AuthedSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
 }
 
