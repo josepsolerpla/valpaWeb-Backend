@@ -18,5 +18,5 @@ type User {
 
 type Authed {
   id: ID! @unique
-  idGoogle: String! @unique
+  tokenGoogle: String! @unique
 }

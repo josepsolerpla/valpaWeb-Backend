@@ -13,7 +13,7 @@ type AggregateUser {
 
 type Authed {
   id: ID!
-  idGoogle: String!
+  tokenGoogle: String!
 }
 
 type AuthedConnection {
@@ -23,7 +23,7 @@ type AuthedConnection {
 }
 
 input AuthedCreateInput {
-  idGoogle: String!
+  tokenGoogle: String!
 }
 
 type AuthedEdge {
@@ -34,8 +34,8 @@ type AuthedEdge {
 enum AuthedOrderByInput {
   id_ASC
   id_DESC
-  idGoogle_ASC
-  idGoogle_DESC
+  tokenGoogle_ASC
+  tokenGoogle_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -44,7 +44,7 @@ enum AuthedOrderByInput {
 
 type AuthedPreviousValues {
   id: ID!
-  idGoogle: String!
+  tokenGoogle: String!
 }
 
 type AuthedSubscriptionPayload {
@@ -66,11 +66,11 @@ input AuthedSubscriptionWhereInput {
 }
 
 input AuthedUpdateInput {
-  idGoogle: String
+  tokenGoogle: String
 }
 
 input AuthedUpdateManyMutationInput {
-  idGoogle: String
+  tokenGoogle: String
 }
 
 input AuthedWhereInput {
@@ -88,20 +88,20 @@ input AuthedWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
-  idGoogle: String
-  idGoogle_not: String
-  idGoogle_in: [String!]
-  idGoogle_not_in: [String!]
-  idGoogle_lt: String
-  idGoogle_lte: String
-  idGoogle_gt: String
-  idGoogle_gte: String
-  idGoogle_contains: String
-  idGoogle_not_contains: String
-  idGoogle_starts_with: String
-  idGoogle_not_starts_with: String
-  idGoogle_ends_with: String
-  idGoogle_not_ends_with: String
+  tokenGoogle: String
+  tokenGoogle_not: String
+  tokenGoogle_in: [String!]
+  tokenGoogle_not_in: [String!]
+  tokenGoogle_lt: String
+  tokenGoogle_lte: String
+  tokenGoogle_gt: String
+  tokenGoogle_gte: String
+  tokenGoogle_contains: String
+  tokenGoogle_not_contains: String
+  tokenGoogle_starts_with: String
+  tokenGoogle_not_starts_with: String
+  tokenGoogle_ends_with: String
+  tokenGoogle_not_ends_with: String
   AND: [AuthedWhereInput!]
   OR: [AuthedWhereInput!]
   NOT: [AuthedWhereInput!]
@@ -109,7 +109,7 @@ input AuthedWhereInput {
 
 input AuthedWhereUniqueInput {
   id: ID
-  idGoogle: String
+  tokenGoogle: String
 }
 
 type BatchPayload {

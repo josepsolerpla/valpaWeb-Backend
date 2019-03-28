@@ -149,8 +149,8 @@ export interface ClientConstructor<T> {
 export type AuthedOrderByInput =
   | "id_ASC"
   | "id_DESC"
-  | "idGoogle_ASC"
-  | "idGoogle_DESC"
+  | "tokenGoogle_ASC"
+  | "tokenGoogle_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
@@ -182,7 +182,7 @@ export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
 export type AuthedWhereUniqueInput = AtLeastOne<{
   id: ID_Input;
-  idGoogle?: String;
+  tokenGoogle?: String;
 }>;
 
 export interface AuthedWhereInput {
@@ -200,20 +200,20 @@ export interface AuthedWhereInput {
   id_not_starts_with?: ID_Input;
   id_ends_with?: ID_Input;
   id_not_ends_with?: ID_Input;
-  idGoogle?: String;
-  idGoogle_not?: String;
-  idGoogle_in?: String[] | String;
-  idGoogle_not_in?: String[] | String;
-  idGoogle_lt?: String;
-  idGoogle_lte?: String;
-  idGoogle_gt?: String;
-  idGoogle_gte?: String;
-  idGoogle_contains?: String;
-  idGoogle_not_contains?: String;
-  idGoogle_starts_with?: String;
-  idGoogle_not_starts_with?: String;
-  idGoogle_ends_with?: String;
-  idGoogle_not_ends_with?: String;
+  tokenGoogle?: String;
+  tokenGoogle_not?: String;
+  tokenGoogle_in?: String[] | String;
+  tokenGoogle_not_in?: String[] | String;
+  tokenGoogle_lt?: String;
+  tokenGoogle_lte?: String;
+  tokenGoogle_gt?: String;
+  tokenGoogle_gte?: String;
+  tokenGoogle_contains?: String;
+  tokenGoogle_not_contains?: String;
+  tokenGoogle_starts_with?: String;
+  tokenGoogle_not_starts_with?: String;
+  tokenGoogle_ends_with?: String;
+  tokenGoogle_not_ends_with?: String;
   AND?: AuthedWhereInput[] | AuthedWhereInput;
   OR?: AuthedWhereInput[] | AuthedWhereInput;
   NOT?: AuthedWhereInput[] | AuthedWhereInput;
@@ -336,15 +336,15 @@ export interface UserWhereInput {
 }
 
 export interface AuthedCreateInput {
-  idGoogle: String;
+  tokenGoogle: String;
 }
 
 export interface AuthedUpdateInput {
-  idGoogle?: String;
+  tokenGoogle?: String;
 }
 
 export interface AuthedUpdateManyMutationInput {
-  idGoogle?: String;
+  tokenGoogle?: String;
 }
 
 export interface UserCreateInput {
@@ -402,19 +402,19 @@ export interface NodeNode {
 
 export interface Authed {
   id: ID_Output;
-  idGoogle: String;
+  tokenGoogle: String;
 }
 
 export interface AuthedPromise extends Promise<Authed>, Fragmentable {
   id: () => Promise<ID_Output>;
-  idGoogle: () => Promise<String>;
+  tokenGoogle: () => Promise<String>;
 }
 
 export interface AuthedSubscription
   extends Promise<AsyncIterator<Authed>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  idGoogle: () => Promise<AsyncIterator<String>>;
+  tokenGoogle: () => Promise<AsyncIterator<String>>;
 }
 
 export interface AuthedConnection {
@@ -629,21 +629,21 @@ export interface AuthedSubscriptionPayloadSubscription
 
 export interface AuthedPreviousValues {
   id: ID_Output;
-  idGoogle: String;
+  tokenGoogle: String;
 }
 
 export interface AuthedPreviousValuesPromise
   extends Promise<AuthedPreviousValues>,
     Fragmentable {
   id: () => Promise<ID_Output>;
-  idGoogle: () => Promise<String>;
+  tokenGoogle: () => Promise<String>;
 }
 
 export interface AuthedPreviousValuesSubscription
   extends Promise<AsyncIterator<AuthedPreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  idGoogle: () => Promise<AsyncIterator<String>>;
+  tokenGoogle: () => Promise<AsyncIterator<String>>;
 }
 
 export interface UserSubscriptionPayload {

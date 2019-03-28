@@ -137,7 +137,9 @@ module.exports = {
 	middlewares: [],
 
 	// Called after broker created.
-	created(broker) {},
+	created(broker) {
+		this.broker = broker;
+	},
 
 	// Called after broker starte.
 	started(broker) {},

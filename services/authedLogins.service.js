@@ -10,6 +10,9 @@ const slug = require('slug');
 
 const client = new OAuth2Client(process.env.CLIENT_ID);
 
+const dotenv = require('dotenv');
+dotenv.config();
+
 module.exports = {
 	name: 'authed',
 	settings: {
@@ -20,36 +23,27 @@ module.exports = {
          * Create / Use Add only if you are in ROOL ROOT
          * 
          */
-		isIn: {
-			params: {
-				tokenGoogle: 'string'
-			},
+		test: {
 			async handler(ctx) {
-				const { tokenGoogle } = ctx.params;
-
-				const ticket = await client
-					.verifyIdToken({
-						idToken: tokenGoogle,
-						audience: process.env.CLIENT_ID
+				console.log;
+				return await ctx.broker
+					.call('authed.isIn', { tokenGoogle: process.env.TOKEN_GOOGLE })
+					.then((res) => {
+						return Promise.resolve(res);
 					})
-					.catch((res) => {
-						return Promise.reject({ err: 'Invalid Token' });
+					.catch((err) => {
+						return Promise.reject(err);
 					});
-
-				const payload = ticket.getPayload();
-				const userid = payload['sub'];
-
-				const authedEmail = `query isIn($where: AuthedWhereUniqueInput!){
-						authed(where: $where){
-							id
-						}}`;
-				const emailData = { where: { idGoogle: userid } };
-
-				return await prisma.$graphql(authedEmail, emailData).then((authedChecked) => {
+			}
+		},
+		isIn: {
+			auth: 'required',
+			async handler(ctx) {
+				return await this.isInDatabase(ctx.meta.userid).then((authedChecked) => {
 					if (!authedChecked.authed) {
 						return Promise.reject(
 							new MoleculerClientError('Not authorized!', 422, '', [
-								{ field: 'idGoogle', message: 'Not authorized' }
+								{ field: 'tokenGoogle', message: 'Not authorized' }
 							])
 						);
 					}
@@ -62,33 +56,68 @@ module.exports = {
          */
 		add: {
 			auth: 'required',
-			params: {
-				idGoogle: 'string'
-			},
 			async handler(ctx) {
-				const checkEmail = `query authedVerify($where: AuthedWhereUniqueInput!){
-                                        authed(where: $where){
-							                idGoogle
-						                }}`;
-				const authedChecked = await prisma.$graphql(checkEmail, idGoogle);
-				if (authedChecked.authed) {
-					return authedChecked.authed;
-				}
-				const insetAuthed = `mutation createAuthed($data: AuthedCreateInput!){
-                                        createAuthed(data: $data){
-                                            idGoogle
-                                        }}`;
-				const authedData = {
-					data: {}
-				};
-				return await prisma.$graphql(insetAuthed, authedData);
+				return await this.isInDatabase(ctx.meta.userid).then((authedChecked) => {
+					if (!authedChecked.authed) {
+						const insetAuthed = `mutation createAuthed($data: AuthedCreateInput!){
+											createAuthed(data: $data){
+												idGoogle
+											}}`;
+						const authedData = {
+							data: {}
+						};
+						return Promise.resolve('We cant add yet but you could');
+						// return prisma.$graphql(insetAuthed, authedData);
+					} else {
+						return Promise.reject(
+							new MoleculerClientError('Is already registered!', 422, '', [
+								{ field: 'idGoogle', message: 'Is already registered' }
+							])
+						);
+					}
+				});
+			}
+		},
+		resolveTokenGoogle: {
+			cache: {
+				keys: [ 'tokenGoogle' ]
+				// ttl: 60 * 60 // 1 hour
+			},
+			params: {
+				tokenGoogle: 'string'
+			},
+			handler(ctx) {
+				const { tokenGoogle } = ctx.params;
+				return new this.Promise((resolve, reject) => {
+					client
+						.verifyIdToken({
+							idToken: tokenGoogle,
+							audience: process.env.CLIENT_ID
+						})
+						.then((ticket) => {
+							resolve(ticket);
+						});
+				}).then((ticket) => {
+					const payload = ticket.getPayload();
+					const userid = payload['sub'];
+					return userid;
+				});
 			}
 		}
 	},
 	/**
 	 * Methods
 	 */
-	methods: {},
+	methods: {
+		isInDatabase(tokenGoogle) {
+			const authedAcc = `query isIn($where: AuthedWhereUniqueInput!){
+				authed(where: $where){
+					id
+				}}`;
+			const where = { where: { tokenGoogle: tokenGoogle } };
+			return prisma.$graphql(authedAcc, where);
+		}
+	},
 	events: {
 		'cache.clean.users'() {
 			if (this.broker.cacher) this.broker.cacher.clean(`${this.name}.*`);
