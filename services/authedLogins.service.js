@@ -1,12 +1,8 @@
 'use strict';
 
-const { MoleculerClientError } = require('moleculer').Errors;
+const { MoleculerError } = require('moleculer').Errors;
 const { prisma } = require('../prisma/generated/prisma-client');
 const { OAuth2Client } = require('google-auth-library');
-
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const slug = require('slug');
 
 const client = new OAuth2Client(process.env.CLIENT_ID);
 
@@ -20,61 +16,68 @@ module.exports = {
 	},
 	actions: {
 		/**
-         * Create / Use Add only if you are in ROOL ROOT
-         * 
+         * Use this Action to check if the database
+		 * 
+		 * Is mainly focused to be used by the api, if you want to use it on other action just use the method insted.
          */
-		test: {
-			async handler(ctx) {
-				console.log;
-				return await ctx.broker
-					.call('authed.isIn', { tokenGoogle: process.env.TOKEN_GOOGLE })
-					.then((res) => {
-						return Promise.resolve(res);
-					})
-					.catch((err) => {
-						return Promise.reject(err);
-					});
-			}
-		},
 		isIn: {
 			auth: 'required',
-			async handler(ctx) {
-				return await this.isInDatabase(ctx.meta.userid).then((authedChecked) => {
-					if (!authedChecked.authed) {
-						return Promise.reject(
-							new MoleculerClientError('Not authorized!', 422, '', [
-								{ field: 'tokenGoogle', message: 'Not authorized' }
-							])
-						);
-					}
-					return Promise.resolve(authedChecked.authed);
+			handler(ctx) {
+				return new Promise((resolve, reject) => {
+					this.isInDatabase(ctx.meta.userid)
+						.then((res) => {
+							if (!res.authed) {
+								reject(
+									new MoleculerError('Not authorized!', 422, '', {
+										field: 'tokenGoogle',
+										message: 'Not authorized'
+									})
+								);
+							}
+							resolve(res.authed);
+						})
+						.catch((err) => {
+							reject(err);
+						});
 				});
 			}
 		},
 		/**
-         * Add a new User that could Login by Google +
+         * Add a new Authorized account of google + to the database
          */
+		test: {
+			handler() {
+				return true;
+			}
+		},
 		add: {
 			auth: 'required',
-			async handler(ctx) {
-				return await this.isInDatabase(ctx.meta.userid).then((authedChecked) => {
-					if (!authedChecked.authed) {
-						const insetAuthed = `mutation createAuthed($data: AuthedCreateInput!){
-											createAuthed(data: $data){
-												idGoogle
-											}}`;
-						const authedData = {
-							data: {}
-						};
-						return Promise.resolve('We cant add yet but you could');
-						// return prisma.$graphql(insetAuthed, authedData);
-					} else {
-						return Promise.reject(
-							new MoleculerClientError('Is already registered!', 422, '', [
-								{ field: 'idGoogle', message: 'Is already registered' }
-							])
-						);
-					}
+			handler(ctx) {
+				console.log(ctx.meta);
+				return new Promise((resolve, reject) => {
+					this.isInDatabase(ctx.meta.userid)
+						.then((res) => {
+							if (!res.authed) {
+								const insetAuthed = `mutation createAuthed($data: AuthedCreateInput!){
+									createAuthed(data: $data){
+										idGoogle
+									}}`;
+								const authedData = {
+									data: {}
+								};
+								resolve('We cant add yet but you could');
+							} else {
+								reject(
+									new MoleculerError('Is already registered!', 422, '', {
+										field: 'idGoogle',
+										message: 'Is already registered'
+									})
+								);
+							}
+						})
+						.catch((err) => {
+							reject(err);
+						});
 				});
 			}
 		},
@@ -88,19 +91,20 @@ module.exports = {
 			},
 			handler(ctx) {
 				const { tokenGoogle } = ctx.params;
-				return new this.Promise((resolve, reject) => {
+				return new Promise((resolve, reject) => {
 					client
 						.verifyIdToken({
 							idToken: tokenGoogle,
 							audience: process.env.CLIENT_ID
 						})
 						.then((ticket) => {
-							resolve(ticket);
+							const payload = ticket.getPayload();
+							const userid = payload['sub'];
+							resolve(userid);
+						})
+						.catch((err) => {
+							reject(err);
 						});
-				}).then((ticket) => {
-					const payload = ticket.getPayload();
-					const userid = payload['sub'];
-					return userid;
 				});
 			}
 		}
@@ -110,20 +114,29 @@ module.exports = {
 	 */
 	methods: {
 		isInDatabase(tokenGoogle) {
-			const authedAcc = `query isIn($where: AuthedWhereUniqueInput!){
+			return new Promise((resolve, reject) => {
+				if (!tokenGoogle) {
+					reject(
+						new MoleculerError('you must provide tokenGoogle', 422, '', {
+							field: 'tokenGoogle',
+							message: 'you must provide tokenGoogle'
+						})
+					);
+				}
+				const authedAcc = `query isIn($where: AuthedWhereUniqueInput!){
 				authed(where: $where){
 					id
 				}}`;
-			const where = { where: { tokenGoogle: tokenGoogle } };
-			return prisma.$graphql(authedAcc, where);
-		}
-	},
-	events: {
-		'cache.clean.users'() {
-			if (this.broker.cacher) this.broker.cacher.clean(`${this.name}.*`);
-		},
-		'cache.clean.follows'() {
-			if (this.broker.cacher) this.broker.cacher.clean(`${this.name}.*`);
+				const where = { where: { tokenGoogle: tokenGoogle } };
+				prisma
+					.$graphql(authedAcc, where)
+					.then((res) => {
+						resolve(res);
+					})
+					.catch((err) => {
+						reject(err);
+					});
+			});
 		}
 	}
 };

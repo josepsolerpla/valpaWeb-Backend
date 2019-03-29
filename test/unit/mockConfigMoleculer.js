@@ -4,7 +4,7 @@ module.exports = {
 	namespace: '',
 	nodeID: 'valpaNode',
 
-	logger: true,
+	logger: false,
 	logLevel: 'info',
 	logFormatter: 'default',
 	logObjectPrinter: null,

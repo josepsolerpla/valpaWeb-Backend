@@ -21,12 +21,14 @@
 		"eslint": "^5.10.0",
 		"jest": "^23.6.0",
 		"jest-cli": "^23.6.0",
-		"moleculer-repl": "^0.5.3"
+		"moleculer-repl": "^0.5.3",
+		"supertest": "^4.0.2"
 	},
 	"dependencies": {
 		"bcrypt": "^3.0.5",
 		"crypto": "^1.0.1",
 		"dotenv": "^7.0.0",
+		"express": "^4.16.4",
 		"google-auth-library": "^3.1.2",
 		"moleculer": "^0.13.0",
 		"moleculer-web": "^0.8.0",
