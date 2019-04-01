@@ -86,6 +86,7 @@ module.exports = {
 				});
 		}
 	},
-
-	created() {}
+	started() {
+		console.log('entra');
+	}
 };
