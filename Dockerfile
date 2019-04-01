@@ -5,10 +5,9 @@ ENV NODE_ENV=production
 RUN mkdir /app
 WORKDIR /app
 
-COPY package.json package-lock.json ./
-
-RUN npm install --production
-
+#COPY package.json package-lock.json ./
 COPY . .
 
-CMD ["npm", "start"]
+#RUN npm install --production
+
+CMD ["npm","run","start"]

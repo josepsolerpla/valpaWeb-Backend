@@ -25,4 +25,5 @@ type AllowedCalendar {
   id: ID! @unique
   idCalendar: String @unique
   createdAt: DateTime!
+  from: [Authed]
 }

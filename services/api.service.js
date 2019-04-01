@@ -17,7 +17,11 @@ module.exports = {
 					// Check if this email from Google + is valid to enter on the app
 					'POST /authed/isIn': 'authed.isIn',
 					// Add an email valid for app from Google +
-					'POST /authed/add': 'authed.add'
+					'POST /authed/add': 'authed.add',
+					// Check if this calendar is in the allowed list
+					'POST /calendar/isIn': 'AllowedCalendar.isIn',
+					// Add idCalendar to the list of allowed calendars
+					'POST /calendar/add': 'AllowedCalendar.add'
 				},
 				cors: true,
 				bodyParsers: {
@@ -86,7 +90,5 @@ module.exports = {
 				});
 		}
 	},
-	started() {
-		console.log('entra');
-	}
+	started() {}
 };
