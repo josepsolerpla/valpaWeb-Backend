@@ -15,6 +15,10 @@ var models = [
   {
     name: "Authed",
     embedded: false
+  },
+  {
+    name: "AllowedCalendar",
+    embedded: false
   }
 ];
 exports.Prisma = prisma_lib_1.makePrismaClientClass({

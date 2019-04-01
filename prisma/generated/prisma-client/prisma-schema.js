@@ -3,12 +3,127 @@ module.exports = {
   // Please don't change this file manually but run `prisma generate` to update it.
   // For more information, please read the docs: https://www.prisma.io/docs/prisma-client/
 
-/* GraphQL */ `type AggregateAuthed {
+/* GraphQL */ `type AggregateAllowedCalendar {
+  count: Int!
+}
+
+type AggregateAuthed {
   count: Int!
 }
 
 type AggregateUser {
   count: Int!
+}
+
+type AllowedCalendar {
+  id: ID!
+  idCalendar: String
+  createdAt: DateTime!
+}
+
+type AllowedCalendarConnection {
+  pageInfo: PageInfo!
+  edges: [AllowedCalendarEdge]!
+  aggregate: AggregateAllowedCalendar!
+}
+
+input AllowedCalendarCreateInput {
+  idCalendar: String
+}
+
+type AllowedCalendarEdge {
+  node: AllowedCalendar!
+  cursor: String!
+}
+
+enum AllowedCalendarOrderByInput {
+  id_ASC
+  id_DESC
+  idCalendar_ASC
+  idCalendar_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type AllowedCalendarPreviousValues {
+  id: ID!
+  idCalendar: String
+  createdAt: DateTime!
+}
+
+type AllowedCalendarSubscriptionPayload {
+  mutation: MutationType!
+  node: AllowedCalendar
+  updatedFields: [String!]
+  previousValues: AllowedCalendarPreviousValues
+}
+
+input AllowedCalendarSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: AllowedCalendarWhereInput
+  AND: [AllowedCalendarSubscriptionWhereInput!]
+  OR: [AllowedCalendarSubscriptionWhereInput!]
+  NOT: [AllowedCalendarSubscriptionWhereInput!]
+}
+
+input AllowedCalendarUpdateInput {
+  idCalendar: String
+}
+
+input AllowedCalendarUpdateManyMutationInput {
+  idCalendar: String
+}
+
+input AllowedCalendarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  idCalendar: String
+  idCalendar_not: String
+  idCalendar_in: [String!]
+  idCalendar_not_in: [String!]
+  idCalendar_lt: String
+  idCalendar_lte: String
+  idCalendar_gt: String
+  idCalendar_gte: String
+  idCalendar_contains: String
+  idCalendar_not_contains: String
+  idCalendar_starts_with: String
+  idCalendar_not_starts_with: String
+  idCalendar_ends_with: String
+  idCalendar_not_ends_with: String
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  AND: [AllowedCalendarWhereInput!]
+  OR: [AllowedCalendarWhereInput!]
+  NOT: [AllowedCalendarWhereInput!]
+}
+
+input AllowedCalendarWhereUniqueInput {
+  id: ID
+  idCalendar: String
 }
 
 type Authed {
@@ -121,6 +236,12 @@ scalar DateTime
 scalar Long
 
 type Mutation {
+  createAllowedCalendar(data: AllowedCalendarCreateInput!): AllowedCalendar!
+  updateAllowedCalendar(data: AllowedCalendarUpdateInput!, where: AllowedCalendarWhereUniqueInput!): AllowedCalendar
+  updateManyAllowedCalendars(data: AllowedCalendarUpdateManyMutationInput!, where: AllowedCalendarWhereInput): BatchPayload!
+  upsertAllowedCalendar(where: AllowedCalendarWhereUniqueInput!, create: AllowedCalendarCreateInput!, update: AllowedCalendarUpdateInput!): AllowedCalendar!
+  deleteAllowedCalendar(where: AllowedCalendarWhereUniqueInput!): AllowedCalendar
+  deleteManyAllowedCalendars(where: AllowedCalendarWhereInput): BatchPayload!
   createAuthed(data: AuthedCreateInput!): Authed!
   updateAuthed(data: AuthedUpdateInput!, where: AuthedWhereUniqueInput!): Authed
   updateManyAutheds(data: AuthedUpdateManyMutationInput!, where: AuthedWhereInput): BatchPayload!
@@ -153,6 +274,9 @@ type PageInfo {
 }
 
 type Query {
+  allowedCalendar(where: AllowedCalendarWhereUniqueInput!): AllowedCalendar
+  allowedCalendars(where: AllowedCalendarWhereInput, orderBy: AllowedCalendarOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [AllowedCalendar]!
+  allowedCalendarsConnection(where: AllowedCalendarWhereInput, orderBy: AllowedCalendarOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AllowedCalendarConnection!
   authed(where: AuthedWhereUniqueInput!): Authed
   autheds(where: AuthedWhereInput, orderBy: AuthedOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Authed]!
   authedsConnection(where: AuthedWhereInput, orderBy: AuthedOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AuthedConnection!
@@ -169,6 +293,7 @@ enum Role {
 }
 
 type Subscription {
+  allowedCalendar(where: AllowedCalendarSubscriptionWhereInput): AllowedCalendarSubscriptionPayload
   authed(where: AuthedSubscriptionWhereInput): AuthedSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
 }

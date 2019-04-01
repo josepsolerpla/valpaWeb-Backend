@@ -20,3 +20,9 @@ type Authed {
   id: ID! @unique
   tokenGoogle: String! @unique
 }
+
+type AllowedCalendar {
+  id: ID! @unique
+  idCalendar: String @unique
+  createdAt: DateTime!
+}

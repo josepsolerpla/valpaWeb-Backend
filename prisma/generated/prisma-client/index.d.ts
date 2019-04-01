@@ -14,6 +14,7 @@ export type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> &
   U[keyof U];
 
 export interface Exists {
+  allowedCalendar: (where?: AllowedCalendarWhereInput) => Promise<boolean>;
   authed: (where?: AuthedWhereInput) => Promise<boolean>;
   user: (where?: UserWhereInput) => Promise<boolean>;
 }
@@ -37,6 +38,31 @@ export interface Prisma {
    * Queries
    */
 
+  allowedCalendar: (
+    where: AllowedCalendarWhereUniqueInput
+  ) => AllowedCalendarPromise;
+  allowedCalendars: (
+    args?: {
+      where?: AllowedCalendarWhereInput;
+      orderBy?: AllowedCalendarOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => FragmentableArray<AllowedCalendar>;
+  allowedCalendarsConnection: (
+    args?: {
+      where?: AllowedCalendarWhereInput;
+      orderBy?: AllowedCalendarOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => AllowedCalendarConnectionPromise;
   authed: (where: AuthedWhereUniqueInput) => AuthedPromise;
   autheds: (
     args?: {
@@ -89,6 +115,34 @@ export interface Prisma {
    * Mutations
    */
 
+  createAllowedCalendar: (
+    data: AllowedCalendarCreateInput
+  ) => AllowedCalendarPromise;
+  updateAllowedCalendar: (
+    args: {
+      data: AllowedCalendarUpdateInput;
+      where: AllowedCalendarWhereUniqueInput;
+    }
+  ) => AllowedCalendarPromise;
+  updateManyAllowedCalendars: (
+    args: {
+      data: AllowedCalendarUpdateManyMutationInput;
+      where?: AllowedCalendarWhereInput;
+    }
+  ) => BatchPayloadPromise;
+  upsertAllowedCalendar: (
+    args: {
+      where: AllowedCalendarWhereUniqueInput;
+      create: AllowedCalendarCreateInput;
+      update: AllowedCalendarUpdateInput;
+    }
+  ) => AllowedCalendarPromise;
+  deleteAllowedCalendar: (
+    where: AllowedCalendarWhereUniqueInput
+  ) => AllowedCalendarPromise;
+  deleteManyAllowedCalendars: (
+    where?: AllowedCalendarWhereInput
+  ) => BatchPayloadPromise;
   createAuthed: (data: AuthedCreateInput) => AuthedPromise;
   updateAuthed: (
     args: { data: AuthedUpdateInput; where: AuthedWhereUniqueInput }
@@ -130,6 +184,9 @@ export interface Prisma {
 }
 
 export interface Subscription {
+  allowedCalendar: (
+    where?: AllowedCalendarSubscriptionWhereInput
+  ) => AllowedCalendarSubscriptionPayloadSubscription;
   authed: (
     where?: AuthedSubscriptionWhereInput
   ) => AuthedSubscriptionPayloadSubscription;
@@ -145,6 +202,16 @@ export interface ClientConstructor<T> {
 /**
  * Types
  */
+
+export type AllowedCalendarOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "idCalendar_ASC"
+  | "idCalendar_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
 
 export type AuthedOrderByInput =
   | "id_ASC"
@@ -179,6 +246,53 @@ export type UserOrderByInput =
   | "image_DESC";
 
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
+
+export type AllowedCalendarWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+  idCalendar?: String;
+}>;
+
+export interface AllowedCalendarWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  idCalendar?: String;
+  idCalendar_not?: String;
+  idCalendar_in?: String[] | String;
+  idCalendar_not_in?: String[] | String;
+  idCalendar_lt?: String;
+  idCalendar_lte?: String;
+  idCalendar_gt?: String;
+  idCalendar_gte?: String;
+  idCalendar_contains?: String;
+  idCalendar_not_contains?: String;
+  idCalendar_starts_with?: String;
+  idCalendar_not_starts_with?: String;
+  idCalendar_ends_with?: String;
+  idCalendar_not_ends_with?: String;
+  createdAt?: DateTimeInput;
+  createdAt_not?: DateTimeInput;
+  createdAt_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_lt?: DateTimeInput;
+  createdAt_lte?: DateTimeInput;
+  createdAt_gt?: DateTimeInput;
+  createdAt_gte?: DateTimeInput;
+  AND?: AllowedCalendarWhereInput[] | AllowedCalendarWhereInput;
+  OR?: AllowedCalendarWhereInput[] | AllowedCalendarWhereInput;
+  NOT?: AllowedCalendarWhereInput[] | AllowedCalendarWhereInput;
+}
 
 export type AuthedWhereUniqueInput = AtLeastOne<{
   id: ID_Input;
@@ -335,6 +449,18 @@ export interface UserWhereInput {
   NOT?: UserWhereInput[] | UserWhereInput;
 }
 
+export interface AllowedCalendarCreateInput {
+  idCalendar?: String;
+}
+
+export interface AllowedCalendarUpdateInput {
+  idCalendar?: String;
+}
+
+export interface AllowedCalendarUpdateManyMutationInput {
+  idCalendar?: String;
+}
+
 export interface AuthedCreateInput {
   tokenGoogle: String;
 }
@@ -374,6 +500,23 @@ export interface UserUpdateManyMutationInput {
   image?: String;
 }
 
+export interface AllowedCalendarSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: AllowedCalendarWhereInput;
+  AND?:
+    | AllowedCalendarSubscriptionWhereInput[]
+    | AllowedCalendarSubscriptionWhereInput;
+  OR?:
+    | AllowedCalendarSubscriptionWhereInput[]
+    | AllowedCalendarSubscriptionWhereInput;
+  NOT?:
+    | AllowedCalendarSubscriptionWhereInput[]
+    | AllowedCalendarSubscriptionWhereInput;
+}
+
 export interface AuthedSubscriptionWhereInput {
   mutation_in?: MutationType[] | MutationType;
   updatedFields_contains?: String;
@@ -398,6 +541,107 @@ export interface UserSubscriptionWhereInput {
 
 export interface NodeNode {
   id: ID_Output;
+}
+
+export interface AllowedCalendar {
+  id: ID_Output;
+  idCalendar?: String;
+  createdAt: DateTimeOutput;
+}
+
+export interface AllowedCalendarPromise
+  extends Promise<AllowedCalendar>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  idCalendar: () => Promise<String>;
+  createdAt: () => Promise<DateTimeOutput>;
+}
+
+export interface AllowedCalendarSubscription
+  extends Promise<AsyncIterator<AllowedCalendar>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  idCalendar: () => Promise<AsyncIterator<String>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
+export interface AllowedCalendarConnection {
+  pageInfo: PageInfo;
+  edges: AllowedCalendarEdge[];
+}
+
+export interface AllowedCalendarConnectionPromise
+  extends Promise<AllowedCalendarConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<AllowedCalendarEdge>>() => T;
+  aggregate: <T = AggregateAllowedCalendarPromise>() => T;
+}
+
+export interface AllowedCalendarConnectionSubscription
+  extends Promise<AsyncIterator<AllowedCalendarConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<AllowedCalendarEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateAllowedCalendarSubscription>() => T;
+}
+
+export interface PageInfo {
+  hasNextPage: Boolean;
+  hasPreviousPage: Boolean;
+  startCursor?: String;
+  endCursor?: String;
+}
+
+export interface PageInfoPromise extends Promise<PageInfo>, Fragmentable {
+  hasNextPage: () => Promise<Boolean>;
+  hasPreviousPage: () => Promise<Boolean>;
+  startCursor: () => Promise<String>;
+  endCursor: () => Promise<String>;
+}
+
+export interface PageInfoSubscription
+  extends Promise<AsyncIterator<PageInfo>>,
+    Fragmentable {
+  hasNextPage: () => Promise<AsyncIterator<Boolean>>;
+  hasPreviousPage: () => Promise<AsyncIterator<Boolean>>;
+  startCursor: () => Promise<AsyncIterator<String>>;
+  endCursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AllowedCalendarEdge {
+  node: AllowedCalendar;
+  cursor: String;
+}
+
+export interface AllowedCalendarEdgePromise
+  extends Promise<AllowedCalendarEdge>,
+    Fragmentable {
+  node: <T = AllowedCalendarPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface AllowedCalendarEdgeSubscription
+  extends Promise<AsyncIterator<AllowedCalendarEdge>>,
+    Fragmentable {
+  node: <T = AllowedCalendarSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateAllowedCalendar {
+  count: Int;
+}
+
+export interface AggregateAllowedCalendarPromise
+  extends Promise<AggregateAllowedCalendar>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateAllowedCalendarSubscription
+  extends Promise<AsyncIterator<AggregateAllowedCalendar>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
 }
 
 export interface Authed {
@@ -436,29 +680,6 @@ export interface AuthedConnectionSubscription
   pageInfo: <T = PageInfoSubscription>() => T;
   edges: <T = Promise<AsyncIterator<AuthedEdgeSubscription>>>() => T;
   aggregate: <T = AggregateAuthedSubscription>() => T;
-}
-
-export interface PageInfo {
-  hasNextPage: Boolean;
-  hasPreviousPage: Boolean;
-  startCursor?: String;
-  endCursor?: String;
-}
-
-export interface PageInfoPromise extends Promise<PageInfo>, Fragmentable {
-  hasNextPage: () => Promise<Boolean>;
-  hasPreviousPage: () => Promise<Boolean>;
-  startCursor: () => Promise<String>;
-  endCursor: () => Promise<String>;
-}
-
-export interface PageInfoSubscription
-  extends Promise<AsyncIterator<PageInfo>>,
-    Fragmentable {
-  hasNextPage: () => Promise<AsyncIterator<Boolean>>;
-  hasPreviousPage: () => Promise<AsyncIterator<Boolean>>;
-  startCursor: () => Promise<AsyncIterator<String>>;
-  endCursor: () => Promise<AsyncIterator<String>>;
 }
 
 export interface AuthedEdge {
@@ -602,6 +823,53 @@ export interface BatchPayloadSubscription
   count: () => Promise<AsyncIterator<Long>>;
 }
 
+export interface AllowedCalendarSubscriptionPayload {
+  mutation: MutationType;
+  node: AllowedCalendar;
+  updatedFields: String[];
+  previousValues: AllowedCalendarPreviousValues;
+}
+
+export interface AllowedCalendarSubscriptionPayloadPromise
+  extends Promise<AllowedCalendarSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = AllowedCalendarPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = AllowedCalendarPreviousValuesPromise>() => T;
+}
+
+export interface AllowedCalendarSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<AllowedCalendarSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = AllowedCalendarSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = AllowedCalendarPreviousValuesSubscription>() => T;
+}
+
+export interface AllowedCalendarPreviousValues {
+  id: ID_Output;
+  idCalendar?: String;
+  createdAt: DateTimeOutput;
+}
+
+export interface AllowedCalendarPreviousValuesPromise
+  extends Promise<AllowedCalendarPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  idCalendar: () => Promise<String>;
+  createdAt: () => Promise<DateTimeOutput>;
+}
+
+export interface AllowedCalendarPreviousValuesSubscription
+  extends Promise<AsyncIterator<AllowedCalendarPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  idCalendar: () => Promise<AsyncIterator<String>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
 export interface AuthedSubscriptionPayload {
   mutation: MutationType;
   node: Authed;
@@ -723,16 +991,6 @@ The `String` scalar type represents textual data, represented as UTF-8 character
 export type String = string;
 
 /*
-The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1. 
-*/
-export type Int = number;
-
-/*
-The `Boolean` scalar type represents `true` or `false`.
-*/
-export type Boolean = boolean;
-
-/*
 DateTime scalar input type, allowing Date
 */
 export type DateTimeInput = Date | string;
@@ -741,6 +999,16 @@ export type DateTimeInput = Date | string;
 DateTime scalar output type, which is always a string
 */
 export type DateTimeOutput = string;
+
+/*
+The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1. 
+*/
+export type Int = number;
+
+/*
+The `Boolean` scalar type represents `true` or `false`.
+*/
+export type Boolean = boolean;
 
 export type Long = string;
 
@@ -759,6 +1027,10 @@ export const models: Model[] = [
   },
   {
     name: "Authed",
+    embedded: false
+  },
+  {
+    name: "AllowedCalendar",
     embedded: false
   }
 ];

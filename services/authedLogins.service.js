@@ -24,6 +24,14 @@ module.exports = {
 			auth: 'required',
 			handler(ctx) {
 				return new Promise((resolve, reject) => {
+					if (!ctx.meta.userid) {
+						reject(
+							new MoleculerError('Not authorized!', 422, '', {
+								field: 'tokenGoogle',
+								message: 'No Token'
+							})
+						);
+					}
 					this.isInDatabase(ctx.meta.userid)
 						.then((res) => {
 							if (!res.authed) {
@@ -45,16 +53,18 @@ module.exports = {
 		/**
          * Add a new Authorized account of google + to the database
          */
-		test: {
-			handler() {
-				return true;
-			}
-		},
 		add: {
 			auth: 'required',
 			handler(ctx) {
-				console.log(ctx.meta);
 				return new Promise((resolve, reject) => {
+					if (!ctx.meta.userid) {
+						reject(
+							new MoleculerError('Not authorized!', 422, '', {
+								field: 'tokenGoogle',
+								message: 'No Token'
+							})
+						);
+					}
 					this.isInDatabase(ctx.meta.userid)
 						.then((res) => {
 							if (!res.authed) {
