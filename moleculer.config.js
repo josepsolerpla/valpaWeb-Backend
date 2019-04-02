@@ -71,7 +71,9 @@ module.exports = {
 
 	middlewares: [],
 
-	created(broker) {},
+	created(broker) {
+		broker.loadServices('services');
+	},
 
 	started(broker) {},
 
