@@ -19,6 +19,7 @@ type AllowedCalendar {
   id: ID!
   idCalendar: String
   createdAt: DateTime!
+  from(where: AuthedWhereInput, orderBy: AuthedOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Authed!]
 }
 
 type AllowedCalendarConnection {
@@ -29,6 +30,7 @@ type AllowedCalendarConnection {
 
 input AllowedCalendarCreateInput {
   idCalendar: String
+  from: AuthedCreateManyInput
 }
 
 type AllowedCalendarEdge {
@@ -73,6 +75,7 @@ input AllowedCalendarSubscriptionWhereInput {
 
 input AllowedCalendarUpdateInput {
   idCalendar: String
+  from: AuthedUpdateManyInput
 }
 
 input AllowedCalendarUpdateManyMutationInput {
@@ -116,6 +119,9 @@ input AllowedCalendarWhereInput {
   createdAt_lte: DateTime
   createdAt_gt: DateTime
   createdAt_gte: DateTime
+  from_every: AuthedWhereInput
+  from_some: AuthedWhereInput
+  from_none: AuthedWhereInput
   AND: [AllowedCalendarWhereInput!]
   OR: [AllowedCalendarWhereInput!]
   NOT: [AllowedCalendarWhereInput!]
@@ -141,6 +147,11 @@ input AuthedCreateInput {
   tokenGoogle: String!
 }
 
+input AuthedCreateManyInput {
+  create: [AuthedCreateInput!]
+  connect: [AuthedWhereUniqueInput!]
+}
+
 type AuthedEdge {
   node: Authed!
   cursor: String!
@@ -162,6 +173,40 @@ type AuthedPreviousValues {
   tokenGoogle: String!
 }
 
+input AuthedScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  tokenGoogle: String
+  tokenGoogle_not: String
+  tokenGoogle_in: [String!]
+  tokenGoogle_not_in: [String!]
+  tokenGoogle_lt: String
+  tokenGoogle_lte: String
+  tokenGoogle_gt: String
+  tokenGoogle_gte: String
+  tokenGoogle_contains: String
+  tokenGoogle_not_contains: String
+  tokenGoogle_starts_with: String
+  tokenGoogle_not_starts_with: String
+  tokenGoogle_ends_with: String
+  tokenGoogle_not_ends_with: String
+  AND: [AuthedScalarWhereInput!]
+  OR: [AuthedScalarWhereInput!]
+  NOT: [AuthedScalarWhereInput!]
+}
+
 type AuthedSubscriptionPayload {
   mutation: MutationType!
   node: Authed
@@ -180,12 +225,48 @@ input AuthedSubscriptionWhereInput {
   NOT: [AuthedSubscriptionWhereInput!]
 }
 
+input AuthedUpdateDataInput {
+  tokenGoogle: String
+}
+
 input AuthedUpdateInput {
   tokenGoogle: String
 }
 
+input AuthedUpdateManyDataInput {
+  tokenGoogle: String
+}
+
+input AuthedUpdateManyInput {
+  create: [AuthedCreateInput!]
+  update: [AuthedUpdateWithWhereUniqueNestedInput!]
+  upsert: [AuthedUpsertWithWhereUniqueNestedInput!]
+  delete: [AuthedWhereUniqueInput!]
+  connect: [AuthedWhereUniqueInput!]
+  set: [AuthedWhereUniqueInput!]
+  disconnect: [AuthedWhereUniqueInput!]
+  deleteMany: [AuthedScalarWhereInput!]
+  updateMany: [AuthedUpdateManyWithWhereNestedInput!]
+}
+
 input AuthedUpdateManyMutationInput {
   tokenGoogle: String
+}
+
+input AuthedUpdateManyWithWhereNestedInput {
+  where: AuthedScalarWhereInput!
+  data: AuthedUpdateManyDataInput!
+}
+
+input AuthedUpdateWithWhereUniqueNestedInput {
+  where: AuthedWhereUniqueInput!
+  data: AuthedUpdateDataInput!
+}
+
+input AuthedUpsertWithWhereUniqueNestedInput {
+  where: AuthedWhereUniqueInput!
+  update: AuthedUpdateDataInput!
+  create: AuthedCreateInput!
 }
 
 input AuthedWhereInput {

@@ -203,21 +203,21 @@ export interface ClientConstructor<T> {
  * Types
  */
 
-export type AllowedCalendarOrderByInput =
-  | "id_ASC"
-  | "id_DESC"
-  | "idCalendar_ASC"
-  | "idCalendar_DESC"
-  | "createdAt_ASC"
-  | "createdAt_DESC"
-  | "updatedAt_ASC"
-  | "updatedAt_DESC";
-
 export type AuthedOrderByInput =
   | "id_ASC"
   | "id_DESC"
   | "tokenGoogle_ASC"
   | "tokenGoogle_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
+
+export type AllowedCalendarOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "idCalendar_ASC"
+  | "idCalendar_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
@@ -251,6 +251,40 @@ export type AllowedCalendarWhereUniqueInput = AtLeastOne<{
   id: ID_Input;
   idCalendar?: String;
 }>;
+
+export interface AuthedWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  tokenGoogle?: String;
+  tokenGoogle_not?: String;
+  tokenGoogle_in?: String[] | String;
+  tokenGoogle_not_in?: String[] | String;
+  tokenGoogle_lt?: String;
+  tokenGoogle_lte?: String;
+  tokenGoogle_gt?: String;
+  tokenGoogle_gte?: String;
+  tokenGoogle_contains?: String;
+  tokenGoogle_not_contains?: String;
+  tokenGoogle_starts_with?: String;
+  tokenGoogle_not_starts_with?: String;
+  tokenGoogle_ends_with?: String;
+  tokenGoogle_not_ends_with?: String;
+  AND?: AuthedWhereInput[] | AuthedWhereInput;
+  OR?: AuthedWhereInput[] | AuthedWhereInput;
+  NOT?: AuthedWhereInput[] | AuthedWhereInput;
+}
 
 export interface AllowedCalendarWhereInput {
   id?: ID_Input;
@@ -289,6 +323,9 @@ export interface AllowedCalendarWhereInput {
   createdAt_lte?: DateTimeInput;
   createdAt_gt?: DateTimeInput;
   createdAt_gte?: DateTimeInput;
+  from_every?: AuthedWhereInput;
+  from_some?: AuthedWhereInput;
+  from_none?: AuthedWhereInput;
   AND?: AllowedCalendarWhereInput[] | AllowedCalendarWhereInput;
   OR?: AllowedCalendarWhereInput[] | AllowedCalendarWhereInput;
   NOT?: AllowedCalendarWhereInput[] | AllowedCalendarWhereInput;
@@ -298,40 +335,6 @@ export type AuthedWhereUniqueInput = AtLeastOne<{
   id: ID_Input;
   tokenGoogle?: String;
 }>;
-
-export interface AuthedWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
-  tokenGoogle?: String;
-  tokenGoogle_not?: String;
-  tokenGoogle_in?: String[] | String;
-  tokenGoogle_not_in?: String[] | String;
-  tokenGoogle_lt?: String;
-  tokenGoogle_lte?: String;
-  tokenGoogle_gt?: String;
-  tokenGoogle_gte?: String;
-  tokenGoogle_contains?: String;
-  tokenGoogle_not_contains?: String;
-  tokenGoogle_starts_with?: String;
-  tokenGoogle_not_starts_with?: String;
-  tokenGoogle_ends_with?: String;
-  tokenGoogle_not_ends_with?: String;
-  AND?: AuthedWhereInput[] | AuthedWhereInput;
-  OR?: AuthedWhereInput[] | AuthedWhereInput;
-  NOT?: AuthedWhereInput[] | AuthedWhereInput;
-}
 
 export type UserWhereUniqueInput = AtLeastOne<{
   id: ID_Input;
@@ -451,18 +454,101 @@ export interface UserWhereInput {
 
 export interface AllowedCalendarCreateInput {
   idCalendar?: String;
+  from?: AuthedCreateManyInput;
 }
 
-export interface AllowedCalendarUpdateInput {
-  idCalendar?: String;
-}
-
-export interface AllowedCalendarUpdateManyMutationInput {
-  idCalendar?: String;
+export interface AuthedCreateManyInput {
+  create?: AuthedCreateInput[] | AuthedCreateInput;
+  connect?: AuthedWhereUniqueInput[] | AuthedWhereUniqueInput;
 }
 
 export interface AuthedCreateInput {
   tokenGoogle: String;
+}
+
+export interface AllowedCalendarUpdateInput {
+  idCalendar?: String;
+  from?: AuthedUpdateManyInput;
+}
+
+export interface AuthedUpdateManyInput {
+  create?: AuthedCreateInput[] | AuthedCreateInput;
+  update?:
+    | AuthedUpdateWithWhereUniqueNestedInput[]
+    | AuthedUpdateWithWhereUniqueNestedInput;
+  upsert?:
+    | AuthedUpsertWithWhereUniqueNestedInput[]
+    | AuthedUpsertWithWhereUniqueNestedInput;
+  delete?: AuthedWhereUniqueInput[] | AuthedWhereUniqueInput;
+  connect?: AuthedWhereUniqueInput[] | AuthedWhereUniqueInput;
+  set?: AuthedWhereUniqueInput[] | AuthedWhereUniqueInput;
+  disconnect?: AuthedWhereUniqueInput[] | AuthedWhereUniqueInput;
+  deleteMany?: AuthedScalarWhereInput[] | AuthedScalarWhereInput;
+  updateMany?:
+    | AuthedUpdateManyWithWhereNestedInput[]
+    | AuthedUpdateManyWithWhereNestedInput;
+}
+
+export interface AuthedUpdateWithWhereUniqueNestedInput {
+  where: AuthedWhereUniqueInput;
+  data: AuthedUpdateDataInput;
+}
+
+export interface AuthedUpdateDataInput {
+  tokenGoogle?: String;
+}
+
+export interface AuthedUpsertWithWhereUniqueNestedInput {
+  where: AuthedWhereUniqueInput;
+  update: AuthedUpdateDataInput;
+  create: AuthedCreateInput;
+}
+
+export interface AuthedScalarWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  tokenGoogle?: String;
+  tokenGoogle_not?: String;
+  tokenGoogle_in?: String[] | String;
+  tokenGoogle_not_in?: String[] | String;
+  tokenGoogle_lt?: String;
+  tokenGoogle_lte?: String;
+  tokenGoogle_gt?: String;
+  tokenGoogle_gte?: String;
+  tokenGoogle_contains?: String;
+  tokenGoogle_not_contains?: String;
+  tokenGoogle_starts_with?: String;
+  tokenGoogle_not_starts_with?: String;
+  tokenGoogle_ends_with?: String;
+  tokenGoogle_not_ends_with?: String;
+  AND?: AuthedScalarWhereInput[] | AuthedScalarWhereInput;
+  OR?: AuthedScalarWhereInput[] | AuthedScalarWhereInput;
+  NOT?: AuthedScalarWhereInput[] | AuthedScalarWhereInput;
+}
+
+export interface AuthedUpdateManyWithWhereNestedInput {
+  where: AuthedScalarWhereInput;
+  data: AuthedUpdateManyDataInput;
+}
+
+export interface AuthedUpdateManyDataInput {
+  tokenGoogle?: String;
+}
+
+export interface AllowedCalendarUpdateManyMutationInput {
+  idCalendar?: String;
 }
 
 export interface AuthedUpdateInput {
@@ -555,6 +641,17 @@ export interface AllowedCalendarPromise
   id: () => Promise<ID_Output>;
   idCalendar: () => Promise<String>;
   createdAt: () => Promise<DateTimeOutput>;
+  from: <T = FragmentableArray<Authed>>(
+    args?: {
+      where?: AuthedWhereInput;
+      orderBy?: AuthedOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
 }
 
 export interface AllowedCalendarSubscription
@@ -563,6 +660,34 @@ export interface AllowedCalendarSubscription
   id: () => Promise<AsyncIterator<ID_Output>>;
   idCalendar: () => Promise<AsyncIterator<String>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  from: <T = Promise<AsyncIterator<AuthedSubscription>>>(
+    args?: {
+      where?: AuthedWhereInput;
+      orderBy?: AuthedOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
+}
+
+export interface Authed {
+  id: ID_Output;
+  tokenGoogle: String;
+}
+
+export interface AuthedPromise extends Promise<Authed>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  tokenGoogle: () => Promise<String>;
+}
+
+export interface AuthedSubscription
+  extends Promise<AsyncIterator<Authed>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  tokenGoogle: () => Promise<AsyncIterator<String>>;
 }
 
 export interface AllowedCalendarConnection {
@@ -642,23 +767,6 @@ export interface AggregateAllowedCalendarSubscription
   extends Promise<AsyncIterator<AggregateAllowedCalendar>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface Authed {
-  id: ID_Output;
-  tokenGoogle: String;
-}
-
-export interface AuthedPromise extends Promise<Authed>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  tokenGoogle: () => Promise<String>;
-}
-
-export interface AuthedSubscription
-  extends Promise<AsyncIterator<Authed>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  tokenGoogle: () => Promise<AsyncIterator<String>>;
 }
 
 export interface AuthedConnection {
