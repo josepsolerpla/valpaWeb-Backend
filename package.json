@@ -4,7 +4,7 @@
 	"description": "My Moleculer microservices project",
 	"scripts": {
 		"dev": "moleculer-runner --repl --hot --env services",
-		"start": "moleculer-runner",
+		"start": "moleculer-runner services",
 		"cli": "moleculer connect NATS",
 		"ci": "jest --watch",
 		"test": "jest --coverage",
@@ -12,10 +12,7 @@
 		"dc:up": "docker-compose up --build -d",
 		"dc:down": "docker-compose down"
 	},
-	"keywords": [
-		"microservices",
-		"moleculer"
-	],
+	"keywords": [ "microservices", "moleculer" ],
 	"author": "",
 	"devDependencies": {
 		"eslint": "^5.10.0",
@@ -25,7 +22,6 @@
 		"supertest": "^4.0.2"
 	},
 	"dependencies": {
-		"bcrypt": "^3.0.5",
 		"crypto": "^1.0.1",
 		"dotenv": "^7.0.0",
 		"express": "^4.16.4",
@@ -43,8 +39,6 @@
 		"coverageDirectory": "../coverage",
 		"testEnvironment": "node",
 		"rootDir": "./services",
-		"roots": [
-			"../test"
-		]
+		"roots": [ "../test" ]
 	}
 }
