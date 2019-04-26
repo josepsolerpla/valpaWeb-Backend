@@ -63,13 +63,13 @@ module.exports = {
 							})
 						);
 					}
-					const query = `query add($where: AllowedCalendarCreateInput!){
-									allowedCalendar(data: $where){
+					const query = `mutation add($data: AllowedCalendarCreateInput!){
+									createAllowedCalendar(data: $data){
 										idCalendar
 									}}`;
-					const where = { where: { idCalendar: idCalendar } };
+					const data = { data: { idCalendar: idCalendar } };
 					prisma
-						.$graphql(query, where)
+						.$graphql(query, data)
 						.then((res) => {
 							resolve(res);
 						})

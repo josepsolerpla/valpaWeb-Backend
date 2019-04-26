@@ -39,6 +39,7 @@ module.exports = {
 		},
 		onError(req, res, err) {
 			// Return with the error as JSON object
+			console.log(err);
 			res.setHeader('Content-type', 'application/json; charset=utf-8');
 			res.writeHead(err.code || 500);
 
@@ -90,5 +91,7 @@ module.exports = {
 				});
 		}
 	},
-	started() {}
+	started() {
+		console.log('entra');
+	}
 };
